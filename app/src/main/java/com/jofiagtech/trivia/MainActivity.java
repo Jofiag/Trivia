@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPreviewButton.setOnClickListener(this);
         mNextButton.setOnClickListener(this);
 
+        mCurrentQuestionIndex = mPrefs.getQuestionState();
         mQuestionBank = new QuestionBank().getQuestionBank(new QuestionAsyncResponce()
         {
             @Override
@@ -217,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onPause()
     {
         mPrefs.saveHighScore(mScoreCounter);
+        mPrefs.saveQuestionState(mCurrentQuestionIndex);
         super.onPause();
     }
 }

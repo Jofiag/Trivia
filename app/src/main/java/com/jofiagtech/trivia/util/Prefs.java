@@ -26,4 +26,14 @@ public class Prefs
     {
        return mPreferences.getInt("high_score", 0);
     }
+
+    public void saveQuestionState(int index)
+    {
+        mPreferences.edit().putInt("question_index", index).apply();
+    }
+
+    public int getQuestionState()
+    {
+        return mPreferences.getInt("question_index", 0);
+    }
 }
