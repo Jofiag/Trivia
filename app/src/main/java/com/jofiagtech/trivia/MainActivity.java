@@ -20,6 +20,7 @@ import com.jofiagtech.trivia.data.QuestionAsyncResponce;
 import com.jofiagtech.trivia.data.QuestionBank;
 import com.jofiagtech.trivia.model.Question;
 import com.jofiagtech.trivia.model.Score;
+import com.jofiagtech.trivia.util.Prefs;
 
 import java.util.ArrayList;
 
@@ -34,14 +35,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CardView mCardView;
     private TextView mScoreText;
     private TextView mHeightScoreText;
-    private int mHeightScore = 0;
     private int mCurrentQuestionIndex = 0;
     ArrayList<Question> mQuestionBank;
     private static final String DATE_ID = "user_score";
-
     private Score mScore;
-    private Score mHeighScore;
+    private Score mHighScore;
     private int mScoreCounter = 0;
+    private Prefs mPrefs;
 
 
     @Override
@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         mScore = new Score();
-        mHeighScore = new Score(0);
+        mHighScore = new Score(0);
+        mPrefs = new Prefs(MainActivity.this);
 
         mQuestionCounterText = findViewById(R.id.question_counter_text);
         mQuestionText = findViewById(R.id.question_text);
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        getBestScoreSaved();
+        mPrefs.getHeighScore();
     }
 
     @Override
@@ -110,12 +111,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
     private void updatePrint()
     {
         mQuestionText.setText(mQuestionBank.get(mCurrentQuestionIndex).getQuestionText());
         mQuestionCounterText.setText(String.format("%d/%d", mCurrentQuestionIndex + 1, mQuestionBank.size()));
 
-        mHeightScoreText.setText(String.format("Best : %s", String.valueOf(mHeighScore.getScore())));
+        mHeightScoreText.setText(String.format("Best : %s", String.valueOf(mHighScore.getScore())));
         mScoreText.setText(String.format("Now : %s", String.valueOf(mScore.getScore())));
     }
 
@@ -142,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mScore.setScore(mScoreCounter);
 
-        saveBestScoreInDisque();
+       // mPrefs.saveHighScore(mScoreCounter);
         goToNextQuestion();
 
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
@@ -216,12 +218,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void saveBestScoreInDisque()
     {
-        if (mScoreCounter > mHeighScore.getScore())
+        if (mScoreCounter > mHighScore.getScore())
         {
-            mHeighScore.setScore(mScoreCounter);
+            mHighScore.setScore(mScoreCounter);
             SharedPreferences sharedPreferences = getSharedPreferences(DATE_ID, MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt("best_score", mHeighScore.getScore());
+            editor.putInt("best_score", mHighScore.getScore());
             editor.apply();
         }
     }
@@ -232,6 +234,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         int s = dataSP.getInt("best_score", -1);
         if ( s != -1)
-            mHeighScore.setScore(s);
+            mHighScore.setScore(s);
+    }
+
+    @Override
+    protected void onPause()
+    {
+        mPrefs.saveHighScore(mScoreCounter);
+        super.onPause();
     }
 }
