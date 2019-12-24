@@ -37,9 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView mHeightScoreText;
     private int mCurrentQuestionIndex = 0;
     ArrayList<Question> mQuestionBank;
-    private static final String DATE_ID = "user_score";
     private Score mScore;
-    private Score mHighScore;
     private int mScoreCounter = 0;
     private Prefs mPrefs;
 
@@ -51,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         mScore = new Score();
-        mHighScore = new Score(0);
         mPrefs = new Prefs(MainActivity.this);
 
         mQuestionCounterText = findViewById(R.id.question_counter_text);
@@ -79,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        mPrefs.getHeighScore();
+        //mPrefs.getHeighScore();
     }
 
     @Override
@@ -117,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mQuestionText.setText(mQuestionBank.get(mCurrentQuestionIndex).getQuestionText());
         mQuestionCounterText.setText(String.format("%d/%d", mCurrentQuestionIndex + 1, mQuestionBank.size()));
 
-        mHeightScoreText.setText(String.format("Best : %s", String.valueOf(mHighScore.getScore())));
+        mHeightScoreText.setText(String.format("Best : %s", String.valueOf(mPrefs.getHeighScore())));
         mScoreText.setText(String.format("Now : %s", String.valueOf(mScore.getScore())));
     }
 
@@ -214,27 +211,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-    }
-
-    private void saveBestScoreInDisque()
-    {
-        if (mScoreCounter > mHighScore.getScore())
-        {
-            mHighScore.setScore(mScoreCounter);
-            SharedPreferences sharedPreferences = getSharedPreferences(DATE_ID, MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt("best_score", mHighScore.getScore());
-            editor.apply();
-        }
-    }
-
-    private void getBestScoreSaved()
-    {
-        SharedPreferences dataSP = getSharedPreferences(DATE_ID, MODE_PRIVATE);
-
-        int s = dataSP.getInt("best_score", -1);
-        if ( s != -1)
-            mHighScore.setScore(s);
     }
 
     @Override
