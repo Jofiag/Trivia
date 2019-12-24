@@ -100,8 +100,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 updatePrint();
                 break;
             case R.id.next_button:
-                    goToNextQuestion();
                 updatePrint();
+                goToNextQuestion();
                 break;
                 default:
                     break;
@@ -141,15 +141,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mScore.setScore(mScoreCounter);
 
-       // mPrefs.saveHighScore(mScoreCounter);
-        goToNextQuestion();
-
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
 
     private void goToNextQuestion()
     {
         mCurrentQuestionIndex = (mCurrentQuestionIndex + 1) % mQuestionBank.size();
+        updatePrint();
     }
 
     //Animation when answering wrong
@@ -170,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onAnimationEnd(Animation animation)
             {
                 mCardView.setBackgroundColor(Color.WHITE);
+                goToNextQuestion();
             }
 
             @Override
@@ -202,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onAnimationEnd(Animation animation)
             {
                 mCardView.setBackgroundColor(Color.WHITE);
+                goToNextQuestion();
             }
 
             @Override
