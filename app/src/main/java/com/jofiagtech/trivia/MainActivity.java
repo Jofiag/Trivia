@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton mNextButton;
     private CardView mCardView;
     private TextView mScoreText;
+    private TextView mHeightScoreText;
     private int mScore = 0;
     private int mHeightScore = 0;
     private int mCurrentQuestionIndex = 0;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mNextButton = findViewById(R.id.next_button);
         mCardView = findViewById(R.id.cardView);
         mScoreText = findViewById(R.id.score_text);
+        mHeightScoreText = findViewById(R.id.height_core_text);
 
         mTrueButton.setOnClickListener(this);
         mFalseButton.setOnClickListener(this);
@@ -78,12 +80,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId())
         {
             case R.id.true_button:
-                updatePrint();
                 checkAnswer(true);
+                updatePrint();
                 break;
             case R.id.false_button:
-                updatePrint();
                 checkAnswer(false);
+                updatePrint();
                 break;
             case R.id.preview_button:
                 if (mCurrentQuestionIndex > 0)
@@ -104,10 +106,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void updatePrint()
     {
         mQuestionText.setText(mQuestionBank.get(mCurrentQuestionIndex).getQuestionText());
+        mQuestionCounterText.setText(String.format("%d/%d", mCurrentQuestionIndex + 1, mQuestionBank.size()));
 
-        mQuestionCounterText.setText((mCurrentQuestionIndex + 1) + "/" + mQuestionBank.size());
-
-        mScoreText.setText(String.valueOf(mScore));
+        mHeightScoreText.setText(String.format("Best : %s", String.valueOf(mHeightScore)));
+        mScoreText.setText(String.format("Now : %s", String.valueOf(mScore)));
     }
 
     private void checkAnswer(boolean UserAnswer)
@@ -220,6 +222,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences dataSP = getSharedPreferences(DATE_ID, MODE_PRIVATE);
 
         if (dataSP.getInt("best_score", -1) != -1)
-            mScore = dataSP.getInt("best_score", -1);
+            mHeightScore = dataSP.getInt("best_score", -1);
     }
 }

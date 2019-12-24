@@ -48,13 +48,14 @@
         android:id="@+id/question_counter_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="188dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginTop="173dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginRight="17dp"
         android:text="@string/score"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         android:textStyle="bold"
+        app:fontFamily="@font/chewy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -120,13 +121,30 @@
         android:id="@+id/score_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="92dp"
-        android:layout_marginLeft="92dp"
-        android:layout_marginTop="188dp"
-        android:text="@string/score_text"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="173dp"
+        android:text="TEGDHDJDKD"
+        android:textColor="@android:color/black"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:fontFamily="@font/chewy"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/height_core_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/score_text"
+        android:textColor="#E7EF07"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:fontFamily="@font/chewy"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/score_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
