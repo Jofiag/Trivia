@@ -3,6 +3,7 @@ package com.jofiagtech.trivia;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,8 +33,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CardView mCardView;
     private TextView mScoreText;
     private int mScore = 0;
+    private int mHeightScore = 0;
     private int mCurrentQuestionIndex = 0;
     ArrayList<Question> mQuestionBank;
+    private static final String DATE_ID = "user_score";
 
 
     @Override
@@ -65,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d("JSON", "processFinished: " + questionArrayList);
             }
         });
+
+        getBestScoreSaved();
     }
 
     @Override
@@ -126,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mScore--;
         }
 
+        saveBestScoreInDisque();
         goToNextQuestion();
 
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
@@ -195,5 +201,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+    }
+
+    private void saveBestScoreInDisque()
+    {
+        if (mScore > mHeightScore)
+        {
+            mHeightScore = mScore;
+            SharedPreferences sharedPreferences = getSharedPreferences(DATE_ID, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("best_score", mHeightScore);
+            editor.apply();
+        }
+    }
+
+    private void getBestScoreSaved()
+    {
+        SharedPreferences dataSP = getSharedPreferences(DATE_ID, MODE_PRIVATE);
+
+        if (dataSP.getInt("best_score", -1) != -1)
+            mScore = dataSP.getInt("best_score", -1);
     }
 }
